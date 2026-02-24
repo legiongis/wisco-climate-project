@@ -9,8 +9,6 @@ import type {
     StoryFeature
 } from '@/types';
 
-import { MOCK_STORIES } from '@/data/stories';
-
 const DynamicMapComponent = dynamic(() => import("./Map"), {
     ssr: false,
     loading: () => (
@@ -27,11 +25,17 @@ const DynamicMapComponent = dynamic(() => import("./Map"), {
 import DashboardPanel from "./DashboardPanel"
 
 interface MapAndDashboardWrapperProps {
-    initialLocation?: string;
+    stories: StoryFeature[];
+    title?: string;
+    titleClassName?: string;
 }
 
-const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = () => {
-    const [stories] = useState<StoryFeature[]>(MOCK_STORIES);
+const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
+    stories: initialStories,
+    title,
+    titleClassName,
+}) => {
+    const [stories] = useState<StoryFeature[]>(initialStories);
     const [selectedStory, setSelectedStory] = useState<StoryFeature | null>(null);
 
     const handleStorySelect = useCallback((story: StoryFeature) => {
@@ -50,6 +54,8 @@ const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = () => {
                     selectedStory={selectedStory}
                     onStorySelect={handleStorySelect}
                     onStoryDeselect={handleStoryDeselect}
+                    title={title}
+                    titleClassName={titleClassName}
                 />
             </div>
             <div className="map-area">

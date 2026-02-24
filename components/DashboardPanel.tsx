@@ -11,6 +11,8 @@ interface DashboardPanelProps {
     selectedStory: StoryFeature | null;
     onStorySelect: (story: StoryFeature) => void;
     onStoryDeselect: () => void;
+    title?: string;
+    titleClassName?: string;
 }
 
 const DashboardPanel: React.FC<DashboardPanelProps> = ({
@@ -18,6 +20,8 @@ const DashboardPanel: React.FC<DashboardPanelProps> = ({
     selectedStory,
     onStorySelect,
     onStoryDeselect,
+    title,
+    titleClassName,
 }) => {
     const [viewMode, setViewMode] = useState<'gallery' | 'list'>('gallery');
 
@@ -30,7 +34,7 @@ const DashboardPanel: React.FC<DashboardPanelProps> = ({
         <div className="dashboard-panel">
             <div className="dashboard-header">
                 <div className="header-text">
-                    <h2>Wisconsin Climate Stories</h2>
+                    <h2 className={titleClassName}>{title || 'Wisconsin Climate Stories'}</h2>
                     <p className="header-subtitle">{stories.length} stories across the state</p>
                 </div>
                 <div className="view-toggles">
