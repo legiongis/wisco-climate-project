@@ -6,7 +6,7 @@ import { useState, useCallback } from "react"
 import dynamic from "next/dynamic"
 
 import type {
-    StoryFeature
+    AnyStoryFeature
 } from '@/types';
 
 const DynamicMapComponent = dynamic(() => import("./Map"), {
@@ -25,20 +25,22 @@ const DynamicMapComponent = dynamic(() => import("./Map"), {
 import DashboardPanel from "./DashboardPanel"
 
 interface MapAndDashboardWrapperProps {
-    stories: StoryFeature[];
+    stories: AnyStoryFeature[];
     title?: string;
     titleClassName?: string;
+    storyType?: "demo" | "wct";
 }
 
 const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
     stories: initialStories,
     title,
     titleClassName,
+    storyType = "demo",
 }) => {
-    const [stories] = useState<StoryFeature[]>(initialStories);
-    const [selectedStory, setSelectedStory] = useState<StoryFeature | null>(null);
+    const [stories] = useState<AnyStoryFeature[]>(initialStories);
+    const [selectedStory, setSelectedStory] = useState<AnyStoryFeature | null>(null);
 
-    const handleStorySelect = useCallback((story: StoryFeature) => {
+    const handleStorySelect = useCallback((story: AnyStoryFeature) => {
         setSelectedStory(story);
     }, []);
 
@@ -56,6 +58,7 @@ const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
                     onStoryDeselect={handleStoryDeselect}
                     title={title}
                     titleClassName={titleClassName}
+                    storyType={storyType}
                 />
             </div>
             <div className="map-area">
@@ -63,6 +66,7 @@ const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
                     stories={stories}
                     selectedStory={selectedStory}
                     onStorySelect={handleStorySelect}
+                    storyType={storyType}
                 />
             </div>
 

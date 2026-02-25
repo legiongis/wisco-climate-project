@@ -8,7 +8,7 @@ import * as L from "leaflet"
 import "leaflet/dist/leaflet.css"
 
 import type {
-    StoryFeature
+    AnyStoryFeature
 } from '@/types';
 
 import { WISCONSIN_BOUNDARY, WISCONSIN_CENTER } from '@/data/wisconsinValues';
@@ -32,28 +32,66 @@ const SELECTED_MARKER_STYLE: L.CircleMarkerOptions = {
     fillOpacity: 0.95
 };
 
+// WCT circle styles (1-mile radius geographic circles)
+const WCT_CIRCLE_STYLE: L.PathOptions = {
+    fillColor: "#991b1b",
+    color: "#ffffff",
+    weight: 2,
+    opacity: 0.9,
+    fillOpacity: 0.35
+};
+
+const WCT_CIRCLE_SELECTED_STYLE: L.PathOptions = {
+    fillColor: "#ff6b35",
+    color: "#ffffff",
+    weight: 3,
+    opacity: 1,
+    fillOpacity: 0.5
+};
+
+const CIRCLE_RADIUS_METERS = 402; // 0.5 mile diameter = 0.25 mile radius
+
+// Helper to get tooltip label from either story type
+function getTooltipLabel(story: AnyStoryFeature): string {
+    const props = story.properties;
+    if ('title' in props && typeof props.title === 'string') {
+        return props.title;
+    }
+    if ('name' in props && typeof props.name === 'string') {
+        return props.name as string;
+    }
+    return 'Story';
+}
+
 interface MapComponentProps {
-    stories: StoryFeature[];
-    selectedStory: StoryFeature | null;
-    onStorySelect: (story: StoryFeature) => void;
+    stories: AnyStoryFeature[];
+    selectedStory: AnyStoryFeature | null;
+    onStorySelect: (story: AnyStoryFeature) => void;
+    storyType?: "demo" | "wct";
 }
 
 const MapComponent: React.FC<MapComponentProps> = ({
     stories,
     selectedStory,
     onStorySelect,
+    storyType = "demo",
 }) => {
     const mapRef = useRef<HTMLDivElement>(null)
     const leafletMapRef = useRef<L.Map | null>(null)
-    const storiesLayerRef = useRef<L.GeoJSON | null>(null)
+    const storiesLayerRef = useRef<L.LayerGroup | null>(null)
 
     // Initialize map
     useEffect(() => {
         if (mapRef.current && typeof window !== "undefined") {
             if (!leafletMapRef.current) {
+                const initialCenter: [number, number] = storyType === "wct"
+                    ? [43.06, -87.95]  // Milwaukee centered for WCT stories
+                    : WISCONSIN_CENTER;
+                const initialZoom = storyType === "wct" ? 11 : 7;
+
                 const currentLeafletMap = L.map(mapRef.current, {
                     zoomControl: false,
-                }).setView(WISCONSIN_CENTER, 7)
+                }).setView(initialCenter, initialZoom)
                 leafletMapRef.current = currentLeafletMap;
 
                 // Position zoom control bottom-right
@@ -84,32 +122,68 @@ const MapComponent: React.FC<MapComponentProps> = ({
                     leafletMapRef.current.removeLayer(storiesLayerRef.current);
                 }
 
-                const storiesCollection = {
-                    type: "FeatureCollection",
-                    features: stories
-                } as any;
+                const layerGroup = L.layerGroup();
 
-                storiesLayerRef.current = L.geoJSON(storiesCollection, {
-                    pointToLayer: (feature, latlng) => {
-                        const marker = L.circleMarker(latlng, DEFAULT_MARKER_STYLE);
-                        return marker;
-                    },
-                    onEachFeature: (feature, layer) => {
-                        // Tooltip on hover
-                        const storyFeature = feature as StoryFeature;
-                        layer.bindTooltip(storyFeature.properties.title, {
+                if (storyType === "wct") {
+                    // WCT: 1-mile radius circles
+                    stories.forEach(story => {
+                        const { coordinates } = story.geometry;
+                        const [lng, lat] = coordinates;
+                        const label = getTooltipLabel(story);
+
+                        const circle = L.circle([lat, lng], {
+                            radius: CIRCLE_RADIUS_METERS,
+                            ...WCT_CIRCLE_STYLE,
+                        });
+
+                        circle.bindTooltip(label, {
                             direction: 'top',
                             offset: [0, -10],
                             className: 'story-tooltip'
                         });
 
-                        layer.on({
-                            click: () => {
-                                onStorySelect(storyFeature);
-                            }
+                        circle.on('click', () => {
+                            onStorySelect(story);
                         });
-                    }
-                }).addTo(leafletMapRef.current);
+
+                        // Store a reference to the story on the layer for selection logic
+                        (circle as any)._storyId = story.properties.id;
+
+                        circle.addTo(layerGroup);
+                    });
+                } else {
+                    // Demo: circle markers (pixel-based)
+                    const storiesCollection = {
+                        type: "FeatureCollection",
+                        features: stories
+                    } as any;
+
+                    const geoJsonLayer = L.geoJSON(storiesCollection, {
+                        pointToLayer: (_feature, latlng) => {
+                            return L.circleMarker(latlng, DEFAULT_MARKER_STYLE);
+                        },
+                        onEachFeature: (feature, layer) => {
+                            const storyFeature = feature as AnyStoryFeature;
+                            const label = getTooltipLabel(storyFeature);
+                            layer.bindTooltip(label, {
+                                direction: 'top',
+                                offset: [0, -10],
+                                className: 'story-tooltip'
+                            });
+
+                            layer.on({
+                                click: () => {
+                                    onStorySelect(storyFeature);
+                                }
+                            });
+                        }
+                    });
+
+                    geoJsonLayer.addTo(layerGroup);
+                }
+
+                layerGroup.addTo(leafletMapRef.current);
+                storiesLayerRef.current = layerGroup;
             }
         }
 
@@ -126,33 +200,63 @@ const MapComponent: React.FC<MapComponentProps> = ({
     useEffect(() => {
         if (!leafletMapRef.current || !storiesLayerRef.current) return;
 
-        // Reset all markers to default style
-        storiesLayerRef.current.eachLayer((layer) => {
-            if (layer instanceof L.CircleMarker) {
-                layer.setStyle(DEFAULT_MARKER_STYLE);
-                layer.setRadius(DEFAULT_MARKER_STYLE.radius!);
-            }
-        });
-
-        if (selectedStory) {
-            const { coordinates } = selectedStory.geometry;
-            const [lng, lat] = coordinates;
-            leafletMapRef.current.flyTo([lat, lng], 10, { duration: 1.2 });
-
-            // Highlight the selected marker
+        if (storyType === "wct") {
+            // Reset all circles, then highlight selected
             storiesLayerRef.current.eachLayer((layer) => {
-                if (layer instanceof L.CircleMarker) {
-                    const feature = (layer as any).feature as StoryFeature;
-                    if (feature && feature.properties.id === selectedStory.properties.id) {
-                        layer.setStyle(SELECTED_MARKER_STYLE);
-                        layer.setRadius(SELECTED_MARKER_STYLE.radius!);
-                        layer.bringToFront();
-                    }
+                if (layer instanceof L.Circle) {
+                    layer.setStyle(WCT_CIRCLE_STYLE);
                 }
             });
+
+            if (selectedStory) {
+                const { coordinates } = selectedStory.geometry;
+                const [lng, lat] = coordinates;
+                leafletMapRef.current.flyTo([lat, lng], 13, { duration: 1.2 });
+
+                storiesLayerRef.current.eachLayer((layer) => {
+                    if (layer instanceof L.Circle && (layer as any)._storyId === selectedStory.properties.id) {
+                        layer.setStyle(WCT_CIRCLE_SELECTED_STYLE);
+                        layer.bringToFront();
+                    }
+                });
+            } else {
+                leafletMapRef.current.flyTo([43.06, -87.95], 11, { duration: 1.0 });
+            }
         } else {
-            // Reset to state-wide view when deselected
-            leafletMapRef.current.flyTo(WISCONSIN_CENTER, 7, { duration: 1.0 });
+            // Demo stories: circle markers
+            storiesLayerRef.current.eachLayer((outerLayer) => {
+                if (outerLayer instanceof L.GeoJSON) {
+                    outerLayer.eachLayer((layer) => {
+                        if (layer instanceof L.CircleMarker) {
+                            layer.setStyle(DEFAULT_MARKER_STYLE);
+                            layer.setRadius(DEFAULT_MARKER_STYLE.radius!);
+                        }
+                    });
+                }
+            });
+
+            if (selectedStory) {
+                const { coordinates } = selectedStory.geometry;
+                const [lng, lat] = coordinates;
+                leafletMapRef.current.flyTo([lat, lng], 10, { duration: 1.2 });
+
+                storiesLayerRef.current.eachLayer((outerLayer) => {
+                    if (outerLayer instanceof L.GeoJSON) {
+                        outerLayer.eachLayer((layer) => {
+                            if (layer instanceof L.CircleMarker) {
+                                const feature = (layer as any).feature as AnyStoryFeature;
+                                if (feature && feature.properties.id === selectedStory.properties.id) {
+                                    layer.setStyle(SELECTED_MARKER_STYLE);
+                                    layer.setRadius(SELECTED_MARKER_STYLE.radius!);
+                                    layer.bringToFront();
+                                }
+                            }
+                        });
+                    }
+                });
+            } else {
+                leafletMapRef.current.flyTo(WISCONSIN_CENTER, 7, { duration: 1.0 });
+            }
         }
     }, [selectedStory]);
 

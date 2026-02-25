@@ -2,14 +2,15 @@
 "use client";
 
 import MapAndDashboardWrapper from '@/components/MapAndDashboardWrapper';
-import { MOCK_STORIES } from '@/data/stories';
+import { WCT_STORIES } from '@/data/wctStories';
 
 export default function WiscoClimateTablePage() {
     return (
         <MapAndDashboardWrapper
-            stories={MOCK_STORIES}
+            stories={WCT_STORIES}
             title="Wisconsin Climate Table Stories"
             titleClassName="text-red-600"
+            storyType="wct"
         />
     );
 }

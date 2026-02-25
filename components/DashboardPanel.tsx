@@ -3,16 +3,47 @@
 
 import type React from "react"
 import { useState } from "react"
-import type { StoryFeature } from '@/types';
+import type { AnyStoryFeature, StoryFeature, WCTStoryFeature } from '@/types';
 import StoryDetailView from './StoryDetailView';
+import WCTStoryDetailView from './WCTStoryDetailView';
 
 interface DashboardPanelProps {
-    stories: StoryFeature[];
-    selectedStory: StoryFeature | null;
-    onStorySelect: (story: StoryFeature) => void;
+    stories: AnyStoryFeature[];
+    selectedStory: AnyStoryFeature | null;
+    onStorySelect: (story: AnyStoryFeature) => void;
     onStoryDeselect: () => void;
     title?: string;
     titleClassName?: string;
+    storyType?: "demo" | "wct";
+}
+
+// Helper to extract display fields from either story type
+function getDisplayFields(story: AnyStoryFeature) {
+    const props = story.properties;
+    if ('title' in props && typeof props.title === 'string') {
+        // Demo story
+        const s = props as StoryFeature['properties'];
+        return {
+            label: s.title,
+            description: s.description,
+            imageUrl: s.imageUrl,
+            category: s.category,
+            date: s.date,
+        };
+    } else {
+        // WCT story
+        const s = props as WCTStoryFeature['properties'];
+        // Extract zip or short neighborhood name for card title
+        const zipMatch = s.neighborhood.match(/\d{5}/);
+        const shortLocation = zipMatch ? zipMatch[0] : s.neighborhood;
+        return {
+            label: `${shortLocation} - ${s.name}`,
+            description: s.role,
+            imageUrl: s.heroImage,
+            category: s.role,
+            date: undefined,
+        };
+    }
 }
 
 const DashboardPanel: React.FC<DashboardPanelProps> = ({
@@ -22,12 +53,16 @@ const DashboardPanel: React.FC<DashboardPanelProps> = ({
     onStoryDeselect,
     title,
     titleClassName,
+    storyType = "demo",
 }) => {
     const [viewMode, setViewMode] = useState<'gallery' | 'list'>('gallery');
 
-    // If a story is selected, show the detail view instead of gallery/list
+    // If a story is selected, show the appropriate detail view
     if (selectedStory) {
-        return <StoryDetailView story={selectedStory} onBack={onStoryDeselect} />;
+        if (storyType === "wct") {
+            return <WCTStoryDetailView story={selectedStory as WCTStoryFeature} onBack={onStoryDeselect} />;
+        }
+        return <StoryDetailView story={selectedStory as StoryFeature} onBack={onStoryDeselect} />;
     }
 
     return (
@@ -67,52 +102,58 @@ const DashboardPanel: React.FC<DashboardPanelProps> = ({
             <div className="dashboard-content">
                 {viewMode === 'gallery' ? (
                     <div className="gallery-view">
-                        {stories.map(story => (
-                            <div
-                                key={story.properties.id}
-                                className="story-card"
-                                onClick={() => onStorySelect(story)}
-                            >
-                                <div className="card-image">
-                                    {story.properties.imageUrl ? (
-                                        <img src={story.properties.imageUrl} alt={story.properties.title} />
-                                    ) : (
-                                        <div className="card-image-fallback" />
-                                    )}
-                                    <span className="card-category-badge">{story.properties.category}</span>
+                        {stories.map(story => {
+                            const d = getDisplayFields(story);
+                            return (
+                                <div
+                                    key={story.properties.id as string}
+                                    className="story-card"
+                                    onClick={() => onStorySelect(story)}
+                                >
+                                    <div className="card-image">
+                                        {d.imageUrl ? (
+                                            <img src={d.imageUrl} alt={d.label} />
+                                        ) : (
+                                            <div className="card-image-fallback" />
+                                        )}
+                                        <span className="card-category-badge">{d.category}</span>
+                                    </div>
+                                    <div className="card-content">
+                                        <h3>{d.label}</h3>
+                                        <p className="card-description">{d.description}</p>
+                                        {d.date && (
+                                            <span className="card-date">{new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                                        )}
+                                    </div>
                                 </div>
-                                <div className="card-content">
-                                    <h3>{story.properties.title}</h3>
-                                    <p className="card-description">{story.properties.description}</p>
-                                    {story.properties.date && (
-                                        <span className="card-date">{new Date(story.properties.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 ) : (
                     <div className="list-view">
-                        {stories.map(story => (
-                            <div
-                                key={story.properties.id}
-                                className="list-item"
-                                onClick={() => onStorySelect(story)}
-                            >
-                                <div className="list-item-image">
-                                    {story.properties.imageUrl ? (
-                                        <img src={story.properties.imageUrl} alt={story.properties.title} />
-                                    ) : (
-                                        <div className="list-item-image-fallback" />
-                                    )}
+                        {stories.map(story => {
+                            const d = getDisplayFields(story);
+                            return (
+                                <div
+                                    key={story.properties.id as string}
+                                    className="list-item"
+                                    onClick={() => onStorySelect(story)}
+                                >
+                                    <div className="list-item-image">
+                                        {d.imageUrl ? (
+                                            <img src={d.imageUrl} alt={d.label} />
+                                        ) : (
+                                            <div className="list-item-image-fallback" />
+                                        )}
+                                    </div>
+                                    <div className="list-item-content">
+                                        <h4>{d.label}</h4>
+                                        <p>{d.description}</p>
+                                    </div>
+                                    <span className="list-category">{d.category}</span>
                                 </div>
-                                <div className="list-item-content">
-                                    <h4>{story.properties.title}</h4>
-                                    <p>{story.properties.description}</p>
-                                </div>
-                                <span className="list-category">{story.properties.category}</span>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 )}
             </div>
