@@ -32,3 +32,36 @@ body {
 *::after {
   box-sizing: border-box;
 }
+
+.wct-body {
+    height: 100%;
+    overflow-y: auto;
+    background: #ffffff;
+    animation: wctSlideIn 0.3s ease-out;
+}
+
+.wct-body > blockquote {
+    border-left: 5px solid #0d7377; /* or #d1d5db if you want grey */
+    margin: 0;
+    padding: 12px 24px;
+    background: transparent;
+    border-radius: 0;
+    font-size: 1.25em; /* Exactly 1.25x bigger */
+    font-style: italic;
+    font-weight: 500;
+    color: #1f2937;
+    line-height: 1.6;
+    display: block;
+}
+
+.wct-hero-image {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+}
+
+.wct-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
