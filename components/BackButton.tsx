@@ -1,16 +1,15 @@
-interface BackButtonProps {
-    onClick: () => void;
-}
+import { useQueryState } from 'nuqs';
 
-const BackButton: React.FC<BackButtonProps> = ({ onClick }) => {
+const BackButton: React.FC = () => {
+    const setSelectedStoryId = useQueryState("story")[1];
     return (
-        <button className="wct-back-button" onClick={onClick}>
+        <button onClick={() => { setSelectedStoryId(null) }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="15 18 9 12 15 6" />
             </svg>
             Back to Stories
             <style jsx>{`
-                .wct-back-button {
+                button {
                     display: flex;
                     align-items: center;
                     gap: 6px;
@@ -27,7 +26,7 @@ const BackButton: React.FC<BackButtonProps> = ({ onClick }) => {
                     font-family: inherit;
                 }
                 
-                .wct-back-button:hover {
+                button:hover {
                     background: #f0fdfa;
                 }`}
             </style>

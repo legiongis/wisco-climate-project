@@ -9,6 +9,8 @@ import * as L from "leaflet"
 import { LatLngExpression } from "leaflet"
 import "leaflet/dist/leaflet.css"
 
+import { useQueryState } from "nuqs"
+
 import type {
     AnyStoryFeature,
     MarkdownStory
@@ -69,7 +71,6 @@ function getTooltipLabel(story: AnyStoryFeature): string {
 interface MapComponentProps {
     stories: AnyStoryFeature[];
     selectedStory: AnyStoryFeature | null;
-    onStorySelect: (storyId: string) => void;
     featureCollection: FeatureCollection;
     storyType?: "demo" | "wct";
     selectedMdStory: MarkdownStory | null;
@@ -81,7 +82,6 @@ const INITIALZOOM: number = 11
 const MapComponent: React.FC<MapComponentProps> = ({
     stories,
     selectedStory,
-    onStorySelect,
     featureCollection,
     storyType = "demo",
     selectedMdStory,
@@ -90,6 +90,8 @@ const MapComponent: React.FC<MapComponentProps> = ({
     const leafletMapRef = useRef<L.Map | null>(null)
     const storiesLayerRef = useRef<L.LayerGroup | null>(null)
     const selectedStoryMarkerRef = useRef<L.CircleMarker | null>(null)
+
+    const setSelectedStoryId = useQueryState("story")[1]
 
     // Initialize map
     useEffect(() => {
@@ -136,7 +138,8 @@ const MapComponent: React.FC<MapComponentProps> = ({
                         });
 
                         circle.on('click', () => {
-                            onStorySelect(feature.properties.id);
+                            // onStorySelect(feature.properties.id);
+                            setSelectedStoryId(feature.properties.id)
                         });
                         circle.on('mouseover', () => {
                             circle.setStyle(WCT_CIRCLE_SELECTED_STYLE)

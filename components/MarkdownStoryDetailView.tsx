@@ -9,10 +9,9 @@ import neighborhoodNotes from "../data/neighborhoods.json";
 
 interface MarkdownStoryDetailViewProps {
     story: MarkdownStory;
-    onBack: () => void;
 }
 
-const MarkdownStoryDetailView: React.FC<MarkdownStoryDetailViewProps> = ({ story, onBack }) => {
+const MarkdownStoryDetailView: React.FC<MarkdownStoryDetailViewProps> = ({ story }) => {
     const { name, role, neighborhood, heroImage, videoUrl, htmlContent } = story;
     let noteString = ""
     if (neighborhood in neighborhoodNotes) {
@@ -22,7 +21,7 @@ const MarkdownStoryDetailView: React.FC<MarkdownStoryDetailViewProps> = ({ story
     return (
       <div className="wct-story-detail">
         
-            <BackButton onClick={onBack} />
+            <BackButton />
             {heroImage && (
                 <div className="wct-hero-image">
                     <img src={heroImage} alt={name} />

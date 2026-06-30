@@ -3,11 +3,13 @@
 
 import type React from "react"
 import { FeatureCollection } from "geojson"
-import { useState, useCallback } from "react"
+import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 
 import * as matter from 'gray-matter';
 import { marked } from 'marked';
+
+import { useQueryState } from 'nuqs'
 
 import type {
     AnyStoryFeature,
@@ -68,6 +70,8 @@ const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
     const [selectedStory, setSelectedStory] = useState<AnyStoryFeature | null>(null);
     const [selectedMdStory, setSelectedMdStory] = useState<MarkdownStory | null>(null);
 
+    const selectedStoryId = useQueryState("story")[0];
+
     const [storiesGeojson, setStoriesGeojson] = useState<FeatureCollection>();
 
     const handleStorySelect = async function(storyId: string) {
@@ -77,10 +81,15 @@ const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
         setSelectedMdStory(mdStory)
     }
 
-    const handleStoryDeselect = useCallback(() => {
-        setSelectedStory(null);
-        setSelectedMdStory(null);
-    }, []);
+    useEffect(() => {
+        if (selectedStoryId) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            handleStorySelect(selectedStoryId)
+        } else {
+            setSelectedStory(null);
+            setSelectedMdStory(null);
+        }
+    }, [selectedStoryId])
 
     async function loadGeoJSON() {
         const response = await fetch('/stories-index.geojson');
@@ -96,8 +105,6 @@ const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
                     <DashboardPanel
                         selectedStory={selectedStory}
                         selectedMdStory={selectedMdStory}
-                        onStorySelect={handleStorySelect}
-                        onStoryDeselect={handleStoryDeselect}
                         title={title}
                         titleClassName={titleClassName}
                         storyType={storyType}
@@ -109,12 +116,10 @@ const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
                         stories={stories}
                         selectedStory={selectedStory}
                         selectedMdStory={selectedMdStory}
-                        onStorySelect={handleStorySelect}
                         featureCollection={storiesGeojson}
                         storyType={storyType}
                     />
                 </div>
-    
                 <style jsx>{`
                     .map-dashboard-container {
                         display: flex;

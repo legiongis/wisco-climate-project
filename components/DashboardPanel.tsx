@@ -4,6 +4,7 @@
 import type React from "react"
 import { useState } from "react"
 import { FeatureCollection} from 'geojson';
+import { useQueryState } from 'nuqs';
 import type { AnyStoryFeature, StoryFeature, WCTStoryFeature, MarkdownStory } from '@/types';
 import StoryDetailView from './StoryDetailView';
 import WCTStoryDetailView from './WCTStoryDetailView';
@@ -12,8 +13,6 @@ import MarkdownStoryDetailView from "./MarkdownStoryDetailView";
 interface DashboardPanelProps {
     selectedStory: AnyStoryFeature | null;
     selectedMdStory: MarkdownStory | null;
-    onStorySelect: (storyId: string) => void;
-    onStoryDeselect: () => void;
     title?: string;
     titleClassName?: string;
     storyType?: "demo" | "wct";
@@ -23,24 +22,23 @@ interface DashboardPanelProps {
 const DashboardPanel: React.FC<DashboardPanelProps> = ({
     selectedStory,
     selectedMdStory,
-    onStorySelect,
-    onStoryDeselect,
     title,
     titleClassName,
     featureCollection,
     storyType = "demo",
 }) => {
     const [viewMode, setViewMode] = useState<'gallery' | 'list'>('gallery');
+    const setSelectedStoryId = useQueryState("story")[1]
 
     if (selectedMdStory) {
-        return <MarkdownStoryDetailView story={selectedMdStory} onBack={onStoryDeselect} />;
+        return <MarkdownStoryDetailView story={selectedMdStory} />;
     }
     // If a story is selected, show the appropriate detail view
     if (selectedStory) {
         if (storyType === "wct") {
-            return <WCTStoryDetailView story={selectedStory as WCTStoryFeature} onBack={onStoryDeselect} />;
+            return <WCTStoryDetailView story={selectedStory as WCTStoryFeature} />;
         }
-        return <StoryDetailView story={selectedStory as StoryFeature} onBack={onStoryDeselect} />;
+        return <StoryDetailView story={selectedStory as StoryFeature} />;
     }
 
     return (
@@ -87,7 +85,7 @@ const DashboardPanel: React.FC<DashboardPanelProps> = ({
                                     <div
                                         key={props.name as string}
                                         className="story-card"
-                                        onClick={() => onStorySelect(props.id)}
+                                        onClick={() => setSelectedStoryId(props.id)}
                                     >
                                         <div className="card-image">
                                             {props.heroImage ? (
@@ -118,7 +116,7 @@ const DashboardPanel: React.FC<DashboardPanelProps> = ({
                                     <div
                                         key={props.name as string}
                                         className="list-item"
-                                        onClick={() => onStorySelect(props.id)}
+                                        onClick={() => setSelectedStoryId(props.id)}
                                     >
                                         <div className="list-item-image">
                                             {props.heroImage ? (
