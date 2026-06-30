@@ -5,7 +5,6 @@ import type React from "react"
 import { FeatureCollection } from "geojson"
 import { useState, useCallback } from "react"
 import dynamic from "next/dynamic"
-import { useQueryState } from 'nuqs'
 
 import * as matter from 'gray-matter';
 import { marked } from 'marked';

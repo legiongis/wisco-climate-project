@@ -81,27 +81,27 @@ const DashboardPanel: React.FC<DashboardPanelProps> = ({
                 {viewMode === 'gallery' ? (
                     <div className="gallery-view">
                         {featureCollection.features.map(story => {
-                            console.log(story.properties)
-                            if (story.properties) {
+                            const props = story.properties;
+                            if (props != null) {
                                 return (
                                     <div
-                                        key={story.properties.name as string}
+                                        key={props.name as string}
                                         className="story-card"
-                                        onClick={() => onStorySelect(story.properties.id)}
+                                        onClick={() => onStorySelect(props.id)}
                                     >
                                         <div className="card-image">
-                                            {story.properties.heroImage ? (
-                                                <img src={story.properties.heroImage} alt={story.properties.name} />
+                                            {props.heroImage ? (
+                                                <img src={props.heroImage} alt={props.name} />
                                             ) : (
                                                 <div className="card-image-fallback" />
                                             )}
-                                            <span className="card-category-badge">{story.properties.role}</span>
+                                            <span className="card-category-badge">{props.role}</span>
                                         </div>
                                         <div className="card-content">
-                                            <h3>{story.properties.name}</h3>
-                                            <p className="card-description">{story.properties.neighborhood}</p>
-                                            {story.properties.date && (
-                                                <span className="card-date">{new Date(story.properties.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                                            <h3>{props.name}</h3>
+                                            <p className="card-description">{props.neighborhood}</p>
+                                            {props.date && (
+                                                <span className="card-date">{new Date(props.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                                             )}
                                         </div>
                                     </div>
@@ -112,25 +112,26 @@ const DashboardPanel: React.FC<DashboardPanelProps> = ({
                 ) : (
                     <div className="list-view">
                         {featureCollection.features.map(story => {
-                            if (story.properties) {
+                            const props = story.properties;
+                            if (props != null) {
                                 return (
                                     <div
-                                        key={story.properties.name as string}
+                                        key={props.name as string}
                                         className="list-item"
-                                        onClick={() => onStorySelect(story.properties.id)}
+                                        onClick={() => onStorySelect(props.id)}
                                     >
                                         <div className="list-item-image">
-                                            {story.properties.heroImage ? (
-                                                <img src={story.properties.heroImage} alt={story.properties.name} />
+                                            {props.heroImage ? (
+                                                <img src={props.heroImage} alt={props.name} />
                                             ) : (
                                                 <div className="list-item-image-fallback" />
                                             )}
                                         </div>
                                         <div className="list-item-content">
-                                            <h4>{story.properties.name}</h4>
-                                            <p>{story.properties.neighborhood}</p>
+                                            <h4>{props.name}</h4>
+                                            <p>{props.neighborhood}</p>
                                         </div>
-                                        <span className="list-category">{story.properties.role}</span>
+                                        <span className="list-category">{props.role}</span>
                                     </div>
                                 );
                             }

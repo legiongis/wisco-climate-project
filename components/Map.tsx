@@ -72,7 +72,7 @@ interface MapComponentProps {
     onStorySelect: (storyId: string) => void;
     featureCollection: FeatureCollection;
     storyType?: "demo" | "wct";
-    selectedMdStory: MarkdownStory;
+    selectedMdStory: MarkdownStory | null;
 }
 
 const INITIALCENTER: LatLngExpression = [43.06, -87.95]

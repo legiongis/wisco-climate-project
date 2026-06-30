@@ -14,7 +14,10 @@ interface MarkdownStoryDetailViewProps {
 
 const MarkdownStoryDetailView: React.FC<MarkdownStoryDetailViewProps> = ({ story, onBack }) => {
     const { name, role, neighborhood, heroImage, videoUrl, htmlContent } = story;
-    const noteString = neighborhood ? neighborhoodNotes[neighborhood].note : null;
+    let noteString = ""
+    if (neighborhood in neighborhoodNotes) {
+        noteString = neighborhoodNotes[neighborhood as keyof typeof neighborhoodNotes].note
+    }
 
     return (
       <div className="wct-story-detail">

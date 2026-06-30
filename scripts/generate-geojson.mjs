@@ -19,9 +19,7 @@ async function generateGeoJSON() {
       const { data } = matter(raw);
 
       const { coords, ...rest } = data;
-      console.log(filePath)
       rest.id = filePath.split("/").pop()
-      console.log(rest)
 
       if (!coords) {
         console.warn(`Skipping ${path.basename(filePath)}: no coords found`);
