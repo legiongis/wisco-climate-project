@@ -1,0 +1,24 @@
+---
+name: Cosmic S.
+role: Resident
+neighborhood: The 53233 Neighborhood
+heroImage: img/cosmic-s.jpg
+coords: -87.9302, 43.0416
+---
+> The electric shut-off moratorium had passed and my parents made an executive decision to ensure my safety by putting me in an environment that was able to meet my basic survival needs even though they knew that theirs were not going to be met.
+
+I am Cosmic S., and I am the Wisconsin Outreach Coordinator with Faith in Place, which is a midwest multi-faith nonprofit organization that fight for those most impacted by environmental injustices. I will do my best to not be before you long but in the effort of expressing the importance of creating awareness around the inhumane disservice performed to communities across this nation, I humbly ask that you open your hearts and hearken your hears to my story! I believe in the power of story-telling for it has always been a great force of connection and understanding that has driven us forward into the future! So I thank you for your time.
+
+I remember years ago when I was just a freshman in high school and this particular year it was a really bad winter that extended well past its due date if you know what I mean!? Come on now you know what I'm talking about. That type of company that invites themselves over, asks to stay a lil longer, and when it's time to go all they do is hover… Yeah like that. Actually it was somewhat similar to this year, like how it has been still snowing well into the spring season. However, back then it was still snowing inches of snow that did indeed stick to the ground.
+
+Now something peculiar happened this year that had never happened to me before. My parents instructed myself and my younger brother and sister to go live with my older sister for a few months until the summertime. Now, I respectfully agreed and adhered to my parents wishes because although I'm inquisitive at heart, I knew I had to be strategic about going about asking my parents "why" given any situation because my parents are old-skool. I mean back-hand you in the mouth old-skool. They had me in their late 40's so at this time they were in their mid to late 50's.
+
+And so, I remember trekking through icy cold, knee high snow in frigid temperatures, nose running, and feet shaking despite my being bundled... Praying for the bus to be on time just to enjoy the feeling of warmth and security it provided for that fleeting moment while I commuted to my destination. I remembered the sense of hope and peace I was able to possess as I looked forward to returning to my sister's house at the end of the school day and snuggling under cozy blankets in a heated space.
+
+Summertime eventually came and my little brother and sister, and I moved back in with my parents and everything seemed to have gone back to normal. Now, I wasn't able to fully grasp the blessing in this story until I became older and realized what had happened. The electric shut-off moratorium had passed and my parents made an executive decision to ensure my safety by putting me in an environment that was able to meet my basic survival needs even though they knew that theirs were not going to be met.
+
+I empathize and began to only fathom what hardships, challenges, and difficulties they had to face during that extended winter as seniors living in unfit conditions due to years of raised bills and lack of adequate home energy efficiency improvements combined with unjust practices aimed at taking advantage of populations by entities like We Energies. So we charge all of these entities adding to the energy burden, pollution, health crisis, and climate impact to completely eliminate their malpractices and transition to a clean economy with renewable energy as close to a zero wasn't modeled as feasibly possible.
+
+We challenge these entities to stop disproportionately affecting and taking advantage of the same communities they are serving. We compel these entities to demonstrate agape love and human compassion when caring for their customers and express the greatest characteristics of humankind such as kindness and mercy.
+
+As I think about the sacrifices that were made and the resiliency my parents possessed, I honor the efforts they made that allowed me to stand here before you today; so on behalf of them, on behalf of all parents, on behalf of all children, on behalf of all seniors, on behalf of all underrepresented communities, on behalf of all those disproportionately abused my socioeconomic, classist, racist environmental injustices and are forced to pass down oral stories of broken homes and cold days. We make a stand for you today so that these harsh stories may transition to jubilee songs of warm winters and loving embers of hearth from a huddled family in wholeness!
