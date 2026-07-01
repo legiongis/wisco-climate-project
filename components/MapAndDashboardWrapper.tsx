@@ -75,7 +75,7 @@ const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
     const [storiesGeojson, setStoriesGeojson] = useState<FeatureCollection>();
 
     const handleStorySelect = async function(storyId: string) {
-        const res = await fetch(`/content/${storyId}`);
+        const res = await fetch(`/stories/${storyId}.md`);
         const text = await res.text()
         const mdStory = await processMarkdown(storyId, text)
         setSelectedMdStory(mdStory)
@@ -92,7 +92,7 @@ const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
     }, [selectedStoryId])
 
     async function loadGeoJSON() {
-        const response = await fetch('/stories-index.geojson');
+        const response = await fetch('/stories/_index.geojson');
         const storiesGeojson = await response.json();
         setStoriesGeojson(storiesGeojson)
     }

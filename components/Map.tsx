@@ -69,10 +69,7 @@ function getTooltipLabel(story: AnyStoryFeature): string {
 }
 
 interface MapComponentProps {
-    stories: AnyStoryFeature[];
-    selectedStory: AnyStoryFeature | null;
     featureCollection: FeatureCollection;
-    storyType?: "demo" | "wct";
     selectedMdStory: MarkdownStory | null;
 }
 
@@ -80,10 +77,7 @@ const INITIALCENTER: LatLngExpression = [43.06, -87.95]
 const INITIALZOOM: number = 11
 
 const MapComponent: React.FC<MapComponentProps> = ({
-    stories,
-    selectedStory,
     featureCollection,
-    storyType = "demo",
     selectedMdStory,
 }) => {
     const mapRef = useRef<HTMLDivElement>(null)

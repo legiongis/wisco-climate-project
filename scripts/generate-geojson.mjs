@@ -7,8 +7,8 @@ import { glob } from "glob";
 import matter from "gray-matter";
 import path from "path";
 
-const STORIES_DIR = "public/content"; // adjust to your markdown directory
-const OUTPUT_PATH = "public/stories-index.geojson"; // adjust to your desired output path
+const STORIES_DIR = "public/stories";
+const OUTPUT_PATH = "public/stories/_index.geojson";
 
 async function generateGeoJSON() {
   const files = await glob(`${STORIES_DIR}/**/*.md`);
@@ -19,7 +19,7 @@ async function generateGeoJSON() {
       const { data } = matter(raw);
 
       const { coords, ...rest } = data;
-      rest.id = filePath.split("/").pop()
+      rest.id = path.parse(filePath).name;
 
       if (!coords) {
         console.warn(`Skipping ${path.basename(filePath)}: no coords found`);
