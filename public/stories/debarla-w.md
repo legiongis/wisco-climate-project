@@ -2,7 +2,7 @@
 name: Debarla W.
 role: Resident
 neighborhood: The 53210 Neighborhood
-heroImage: img/debarla-w.png
+heroImage: img/debarla-w.jpg
 coords: -87.9691, 43.0691
 ---
 

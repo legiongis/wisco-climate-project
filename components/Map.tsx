@@ -73,8 +73,8 @@ interface MapComponentProps {
     selectedMdStory: MarkdownStory | null;
 }
 
-const INITIALCENTER: LatLngExpression = [43.06, -87.95]
-const INITIALZOOM: number = 11
+let INITIALCENTER: LatLngExpression = [43.06, -87.95]
+const INITIALZOOM: number = 12
 
 const MapComponent: React.FC<MapComponentProps> = ({
     featureCollection,
@@ -118,7 +118,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
                     }
                 }).addTo(currentLeafletMap);
 
-                L.geoJSON(featureCollection, {
+                const storiesLayer = L.geoJSON(featureCollection, {
                     pointToLayer: function (feature, latlng) {
                         const circle = L.circle(latlng, {
                             radius: CIRCLE_RADIUS_METERS,
@@ -143,8 +143,10 @@ const MapComponent: React.FC<MapComponentProps> = ({
                         })
                         return circle
                     }
-                }).addTo(currentLeafletMap)
-
+                })
+                
+                storiesLayer.addTo(currentLeafletMap)
+                INITIALCENTER = storiesLayer.getBounds().getCenter()
                 // if (storyType === "wct") {
                 //     // WCT: 1-mile radius circles
                 //     stories.forEach(story => {

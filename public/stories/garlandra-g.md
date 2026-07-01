@@ -2,7 +2,7 @@
 name: Garlandra G.
 role: Resident
 neighborhood: The 53218 Neighborhood
-heroImage: img/garlandra-g.png
+heroImage: img/garlandra-g.jpg
 coords: -87.9892, 43.1232
 ---
 

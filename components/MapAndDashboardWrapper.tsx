@@ -32,7 +32,7 @@ const DynamicMapComponent = dynamic(() => import("./Map"), {
 import DashboardPanel from "./DashboardPanel"
 
 interface MapAndDashboardWrapperProps {
-    stories: AnyStoryFeature[];
+    stories?: AnyStoryFeature[];
     title?: string;
     titleClassName?: string;
     storyType?: "demo" | "wct";
@@ -66,7 +66,7 @@ const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
     titleClassName,
     storyType = "demo",
 }) => {
-    const [stories] = useState<AnyStoryFeature[]>(initialStories);
+    const [stories] = useState<AnyStoryFeature[] | undefined>(initialStories);
     const [selectedStory, setSelectedStory] = useState<AnyStoryFeature | null>(null);
     const [selectedMdStory, setSelectedMdStory] = useState<MarkdownStory | null>(null);
 

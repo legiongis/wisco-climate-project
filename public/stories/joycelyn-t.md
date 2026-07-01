@@ -2,7 +2,7 @@
 name: Joycelyn T.
 role: Resident
 neighborhood: The 53206 Neighborhood
-heroImage: img/joycelyn-t.png
+heroImage: img/joycelyn-t.jpg
 coords: -87.9348, 43.0768
 ---
 > Let your voice be heard; Speak up!

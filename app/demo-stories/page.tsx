@@ -5,5 +5,5 @@ import MapAndDashboardWrapper from '@/components/MapAndDashboardWrapper';
 import { MOCK_STORIES } from '@/data/stories';
 
 export default function DemoStoriesPage() {
-    return <MapAndDashboardWrapper stories={MOCK_STORIES} />;
+    // return <MapAndDashboardWrapper stories={MOCK_STORIES} />;
 }

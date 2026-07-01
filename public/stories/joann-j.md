@@ -2,7 +2,7 @@
 name: JoAnn J.
 role: Resident
 neighborhood: The 53210 Neighborhood
-heroImage: img/joann-j.png
+heroImage: img/joann-j.jpg
 coords: -87.9661, 43.0711
 ---
 > Now I'm worried WILL my electric and gas be turned OFF? Or will I be penalized? - I tried.
