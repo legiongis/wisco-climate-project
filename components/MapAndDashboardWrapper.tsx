@@ -103,21 +103,16 @@ const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
             <div className="map-dashboard-container">
                 <div className="dashboard-area">
                     <DashboardPanel
-                        selectedStory={selectedStory}
                         selectedMdStory={selectedMdStory}
                         title={title}
                         titleClassName={titleClassName}
-                        storyType={storyType}
                         featureCollection={storiesGeojson}
                     />
                 </div>
                 <div className="map-area">
                     <DynamicMapComponent
-                        stories={stories}
-                        selectedStory={selectedStory}
                         selectedMdStory={selectedMdStory}
                         featureCollection={storiesGeojson}
-                        storyType={storyType}
                     />
                 </div>
                 <style jsx>{`
