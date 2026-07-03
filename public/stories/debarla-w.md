@@ -3,7 +3,7 @@ name: Debarla W.
 role: Resident
 neighborhood: The 53210 Neighborhood
 heroImage: img/debarla-w.jpg
-coords: -87.9691, 43.0691
+coords: -87.9687711, 43.0679675
 ---
 
 > I'm here to support and stand up fights in the energy burden. This is a subject that affects us all at hand, one way or another, especially the black and brown people here in Milwaukee.

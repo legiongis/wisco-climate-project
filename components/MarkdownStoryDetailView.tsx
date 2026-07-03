@@ -17,6 +17,7 @@ const MarkdownStoryDetailView: React.FC<MarkdownStoryDetailViewProps> = ({ story
     if (neighborhood in neighborhoodNotes) {
         noteString = neighborhoodNotes[neighborhood as keyof typeof neighborhoodNotes].note
     }
+    console.log(videoUrl)
 
     return (
       <div className="wct-story-detail">
@@ -34,6 +35,12 @@ const MarkdownStoryDetailView: React.FC<MarkdownStoryDetailViewProps> = ({ story
                     <p className="wct-role">{role}</p>
                     <p className="wct-neighborhood">{neighborhood}</p>
                 </div>
+
+                {videoUrl && (
+                    <iframe width="100%" height="400"
+                        src={videoUrl}>
+                    </iframe>
+                )}
 
                 <div className="wct-body" dangerouslySetInnerHTML={{ __html: htmlContent }} />
                 {noteString && (

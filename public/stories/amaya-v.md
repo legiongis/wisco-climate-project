@@ -3,7 +3,7 @@ name: Amaya V.
 role: Resident
 neighborhood: The 53202 Neighborhood
 heroImage: img/amaya-v.jpg
-coords: -87.9015, 43.0454
+coords: -87.90330, 43.0438
 ---
 > Many landlords in Milwaukee do not accept energy assistance or discriminate against tenants who need it.
 

@@ -3,7 +3,7 @@ name: Maria B.
 role: Home Owner
 neighborhood: Lindsay Heights
 heroImage: img/maria-b.jpg
-coords: -87.9298, 43.0561
+coords: -87.93076, 43.05474
 ---
 
 > I am here to Fight for Our Lights!!! We Energies! YOU MAKE ENERGY A BURDEN!

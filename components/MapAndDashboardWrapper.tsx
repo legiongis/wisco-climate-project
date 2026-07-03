@@ -54,6 +54,7 @@ async function processMarkdown(id: string, rawMarkdownString: string) {
         role: data.role,
         heroImage: data.heroImage,
         htmlContent: htmlContent,
+        videoUrl: data.videoUrl,
         coords: data.coords.split(",").map(Number)
     }
 

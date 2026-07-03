@@ -3,7 +3,7 @@ name: Garlandra G.
 role: Resident
 neighborhood: The 53218 Neighborhood
 heroImage: img/garlandra-g.jpg
-coords: -87.9892, 43.1232
+coords: -87.99096, 43.12313
 ---
 
 _North Side, historic Old North Milwaukee Villard Avenue area_
