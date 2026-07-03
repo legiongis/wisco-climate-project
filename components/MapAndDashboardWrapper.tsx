@@ -29,14 +29,7 @@ const DynamicMapComponent = dynamic(() => import("./Map"), {
     ),
 })
 
-import DashboardPanel from "./DashboardPanel"
-
-interface MapAndDashboardWrapperProps {
-    stories?: AnyStoryFeature[];
-    title?: string;
-    titleClassName?: string;
-    storyType?: "demo" | "wct";
-}
+import DashboardPanel from "./DashboardPanel";
 
 async function processMarkdown(id: string, rawMarkdownString: string) {
     // workaround from ticket: https://github.com/jonschlinkert/gray-matter/issues/181
@@ -61,14 +54,7 @@ async function processMarkdown(id: string, rawMarkdownString: string) {
   return parsedStory;
 }
 
-const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
-    stories: initialStories,
-    title,
-    titleClassName,
-    storyType = "demo",
-}) => {
-    const [stories] = useState<AnyStoryFeature[] | undefined>(initialStories);
-    const [selectedStory, setSelectedStory] = useState<AnyStoryFeature | null>(null);
+const MapAndDashboardWrapper: React.FC = () => {
     const [selectedMdStory, setSelectedMdStory] = useState<MarkdownStory | null>(null);
 
     const selectedStoryId = useQueryState("story")[0];
@@ -87,7 +73,6 @@ const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
             // eslint-disable-next-line react-hooks/set-state-in-effect
             handleStorySelect(selectedStoryId)
         } else {
-            setSelectedStory(null);
             setSelectedMdStory(null);
         }
     }, [selectedStoryId])
@@ -105,8 +90,6 @@ const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
                 <div className="dashboard-area">
                     <DashboardPanel
                         selectedMdStory={selectedMdStory}
-                        title={title}
-                        titleClassName={titleClassName}
                         featureCollection={storiesGeojson}
                     />
                 </div>

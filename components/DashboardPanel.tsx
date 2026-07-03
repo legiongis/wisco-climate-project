@@ -10,15 +10,11 @@ import MarkdownStoryDetailView from "./MarkdownStoryDetailView";
 
 interface DashboardPanelProps {
     selectedMdStory: MarkdownStory | null;
-    title?: string;
-    titleClassName?: string;
     featureCollection: FeatureCollection;
 }
 
 const DashboardPanel: React.FC<DashboardPanelProps> = ({
     selectedMdStory,
-    title,
-    titleClassName,
     featureCollection,
 }) => {
     const [viewMode, setViewMode] = useState<'gallery' | 'list'>('gallery');
@@ -31,7 +27,7 @@ const DashboardPanel: React.FC<DashboardPanelProps> = ({
             <div className="dashboard-panel">
                 <div className="dashboard-header">
                     <div className="header-text">
-                        <h2 className={titleClassName}>{title || 'Wisconsin Climate Stories'}</h2>
+                        <h2>Wisconsin Climate Table Stories</h2>
                         <p className="header-subtitle">{featureCollection.features.length} stories across the state</p>
                     </div>
                     <div className="view-toggles">
