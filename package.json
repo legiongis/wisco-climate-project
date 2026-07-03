@@ -4,16 +4,19 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/generate-geojson.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
     "geojson": "^0.5.0",
+    "glob": "^13.0.6",
+    "gray-matter": "^4.0.3",
     "leaflet": "^1.9.4",
+    "marked": "^18.0.5",
     "next": "16.1.6",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "nuqs": "^2.9.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

@@ -2,11 +2,18 @@
 "use client"
 
 import type React from "react"
-import { useState, useCallback } from "react"
+import { FeatureCollection } from "geojson"
+import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 
+import * as matter from 'gray-matter';
+import { marked } from 'marked';
+
+import { useQueryState } from 'nuqs'
+
 import type {
-    AnyStoryFeature
+    AnyStoryFeature,
+    MarkdownStory
 } from '@/types';
 
 const DynamicMapComponent = dynamic(() => import("./Map"), {
@@ -22,79 +29,103 @@ const DynamicMapComponent = dynamic(() => import("./Map"), {
     ),
 })
 
-import DashboardPanel from "./DashboardPanel"
+import DashboardPanel from "./DashboardPanel";
 
-interface MapAndDashboardWrapperProps {
-    stories: AnyStoryFeature[];
-    title?: string;
-    titleClassName?: string;
-    storyType?: "demo" | "wct";
+async function processMarkdown(id: string, rawMarkdownString: string) {
+    // workaround from ticket: https://github.com/jonschlinkert/gray-matter/issues/181
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const parse = (matter as any).default || matter;
+    const { data, content } = parse(rawMarkdownString);
+
+    // Convert Markdown body to safe HTML string
+    const htmlContent = await marked.parse(content, {gfm: true});
+
+    const parsedStory: MarkdownStory = {
+        id: id,
+        name: data.name,
+        neighborhood: data.neighborhood,
+        role: data.role,
+        heroImage: data.heroImage,
+        htmlContent: htmlContent,
+        videoUrl: data.videoUrl,
+        coords: data.coords.split(",").map(Number)
+    }
+
+  return parsedStory;
 }
 
-const MapAndDashboardWrapper: React.FC<MapAndDashboardWrapperProps> = ({
-    stories: initialStories,
-    title,
-    titleClassName,
-    storyType = "demo",
-}) => {
-    const [stories] = useState<AnyStoryFeature[]>(initialStories);
-    const [selectedStory, setSelectedStory] = useState<AnyStoryFeature | null>(null);
+const MapAndDashboardWrapper: React.FC = () => {
+    const [selectedMdStory, setSelectedMdStory] = useState<MarkdownStory | null>(null);
 
-    const handleStorySelect = useCallback((story: AnyStoryFeature) => {
-        setSelectedStory(story);
-    }, []);
+    const selectedStoryId = useQueryState("story")[0];
 
-    const handleStoryDeselect = useCallback(() => {
-        setSelectedStory(null);
-    }, []);
+    const [storiesGeojson, setStoriesGeojson] = useState<FeatureCollection>();
 
-    return (
-        <div className="map-dashboard-container">
-            <div className="dashboard-area">
-                <DashboardPanel
-                    stories={stories}
-                    selectedStory={selectedStory}
-                    onStorySelect={handleStorySelect}
-                    onStoryDeselect={handleStoryDeselect}
-                    title={title}
-                    titleClassName={titleClassName}
-                    storyType={storyType}
-                />
+    const handleStorySelect = async function(storyId: string) {
+        const res = await fetch(`/stories/${storyId}.md`);
+        const text = await res.text()
+        const mdStory = await processMarkdown(storyId, text)
+        setSelectedMdStory(mdStory)
+    }
+
+    useEffect(() => {
+        if (selectedStoryId) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            handleStorySelect(selectedStoryId)
+        } else {
+            setSelectedMdStory(null);
+        }
+    }, [selectedStoryId])
+
+    async function loadGeoJSON() {
+        const response = await fetch('/stories/_index.geojson');
+        const storiesGeojson = await response.json();
+        setStoriesGeojson(storiesGeojson)
+    }
+    if (storiesGeojson === undefined) {
+        loadGeoJSON()
+    } else {
+        return (
+            <div className="map-dashboard-container">
+                <div className="dashboard-area">
+                    <DashboardPanel
+                        selectedMdStory={selectedMdStory}
+                        featureCollection={storiesGeojson}
+                    />
+                </div>
+                <div className="map-area">
+                    <DynamicMapComponent
+                        selectedMdStory={selectedMdStory}
+                        featureCollection={storiesGeojson}
+                    />
+                </div>
+                <style jsx>{`
+                    .map-dashboard-container {
+                        display: flex;
+                        flex-direction: row;
+                        height: 100vh;
+                        width: 100%;
+                        padding: 0;
+                        box-sizing: border-box;
+                        position: relative;
+                    }
+    
+                    .dashboard-area {
+                        flex: 1; /* 50% width — LEFT side */
+                        height: 100%;
+                        overflow: hidden;
+                    }
+    
+                    .map-area {
+                        flex: 1; /* 50% width — RIGHT side */
+                        height: 100%;
+                        border-left: 2px solid #e5e7eb;
+                    }
+                `}</style>
             </div>
-            <div className="map-area">
-                <DynamicMapComponent
-                    stories={stories}
-                    selectedStory={selectedStory}
-                    onStorySelect={handleStorySelect}
-                    storyType={storyType}
-                />
-            </div>
+        )
+    }
 
-            <style jsx>{`
-                .map-dashboard-container {
-                    display: flex;
-                    flex-direction: row;
-                    height: 100vh;
-                    width: 100%;
-                    padding: 0;
-                    box-sizing: border-box;
-                    position: relative;
-                }
-
-                .dashboard-area {
-                    flex: 1; /* 50% width — LEFT side */
-                    height: 100%;
-                    overflow: hidden;
-                }
-
-                .map-area {
-                    flex: 1; /* 50% width — RIGHT side */
-                    height: 100%;
-                    border-left: 2px solid #e5e7eb;
-                }
-            `}</style>
-        </div>
-    )
 }
 
 export default MapAndDashboardWrapper

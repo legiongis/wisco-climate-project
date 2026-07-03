@@ -15,6 +15,17 @@ export interface StoryKnownProperties {
     galleryImages?: string[];
 }
 
+export interface MarkdownStory {
+    id: string;
+    name: string;           // rendered in dark red
+    role: string;           // rendered in black
+    neighborhood: string;   // rendered in black
+    heroImage: string;      // photo below title, above quote
+    coords: [number, number];
+    videoUrl?: string;
+    htmlContent: string;
+}
+
 export type StoryProperties = StoryKnownProperties & GeoJsonProperties;
 
 export type StoryFeature = Feature<Point, StoryProperties>;
