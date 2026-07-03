@@ -5,8 +5,7 @@ import React, {
     useEffect, useRef,
 } from "react"
 import { FeatureCollection } from "geojson"
-import * as L from "leaflet"
-import { LatLngExpression } from "leaflet"
+import * as L from "leaflet";
 import "leaflet/dist/leaflet.css"
 
 import { useQueryState } from "nuqs"
@@ -68,13 +67,26 @@ function getTooltipLabel(story: AnyStoryFeature): string {
     return 'Story';
 }
 
+function getRadius(zoom: number) {
+    let radius: number;
+    if (zoom <= 10) {
+        radius = 3000;
+    } else if (zoom <= 12) {
+        radius = 2000;
+    } else if (zoom <= 14) {
+        radius  = 1000;
+    } else {
+        radius = 500;
+    }
+    return radius
+}
+
 interface MapComponentProps {
     featureCollection: FeatureCollection;
     selectedMdStory: MarkdownStory | null;
 }
 
-let INITIALCENTER: LatLngExpression = [43.06, -87.95]
-const INITIALZOOM: number = 12
+let FULLBOUNDS: L.LatLngBounds;
 
 const MapComponent: React.FC<MapComponentProps> = ({
     featureCollection,
@@ -94,7 +106,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
 
                 const currentLeafletMap = L.map(mapRef.current, {
                     zoomControl: false,
-                }).setView(INITIALCENTER, INITIALZOOM)
+                }).setView([43.06, -87.95], 12)
                 leafletMapRef.current = currentLeafletMap;
 
                 // Position zoom control bottom-right
@@ -118,6 +130,10 @@ const MapComponent: React.FC<MapComponentProps> = ({
                     }
                 }).addTo(currentLeafletMap);
 
+                // const clusterGroup = new MarkerClusterGroup({
+                //     showCoverageOnHover: false,
+                // }
+                // );
                 const storiesLayer = L.geoJSON(featureCollection, {
                     pointToLayer: function (feature, latlng) {
                         const circle = L.circle(latlng, {
@@ -144,9 +160,26 @@ const MapComponent: React.FC<MapComponentProps> = ({
                         return circle
                     }
                 })
-                
-                storiesLayer.addTo(currentLeafletMap)
-                INITIALCENTER = storiesLayer.getBounds().getCenter()
+
+                storiesLayer.addTo(currentLeafletMap);
+                currentLeafletMap.eachLayer(lyr => {
+                    console.log(lyr)
+                })
+                // clusterGroup.addTo(currentLeafletMap)
+                FULLBOUNDS = storiesLayer.getBounds();
+                currentLeafletMap.fitBounds(FULLBOUNDS);
+                // currentLeafletMap.on('layeradd', function(e) {
+                //     if (e.layer === storiesLayer) {
+                //     }
+                // });
+
+                currentLeafletMap.on('zoomend', function() {
+                    currentLeafletMap.eachLayer((lyr) => {
+                        if (lyr instanceof L.CircleMarker) {
+                            lyr.setRadius(getRadius(currentLeafletMap.getZoom()))
+                        }
+                    });
+                });
                 // if (storyType === "wct") {
                 //     // WCT: 1-mile radius circles
                 //     stories.forEach(story => {
@@ -225,9 +258,9 @@ const MapComponent: React.FC<MapComponentProps> = ({
                leafletMapRef.current.removeLayer(selectedStoryMarkerRef.current)
             }
             if (selectedMdStory) {
-                const latlng: LatLngExpression = [selectedMdStory.coords[1], selectedMdStory.coords[0]];
+                const latlng: L.LatLngExpression = [selectedMdStory.coords[1], selectedMdStory.coords[0]];
                 const selectedCircle = L.circle(latlng, {
-                    radius: CIRCLE_RADIUS_METERS,
+                    radius: getRadius(leafletMapRef.current.getZoom()),
                     ...WCT_CIRCLE_SELECTED_STYLE
                 })
                 selectedCircle.bindTooltip(selectedMdStory.name, {
@@ -238,9 +271,9 @@ const MapComponent: React.FC<MapComponentProps> = ({
                 selectedStoryMarkerRef.current = selectedCircle;
 
                 leafletMapRef.current.addLayer(selectedStoryMarkerRef.current)
-                leafletMapRef.current.flyTo(latlng, 13, { duration: 1.2 });
+                leafletMapRef.current.flyTo(latlng, 15, { duration: 1.2 });
             } else {
-                leafletMapRef.current.flyTo(INITIALCENTER, INITIALZOOM)
+                leafletMapRef.current.fitBounds(FULLBOUNDS)
             }
         }
     }, [selectedMdStory, leafletMapRef, selectedStoryMarkerRef])
