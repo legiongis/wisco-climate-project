@@ -11,7 +11,6 @@ import "leaflet/dist/leaflet.css"
 import { useQueryState } from "nuqs"
 
 import type {
-    AnyStoryFeature,
     MarkdownStory
 } from '@/types';
 

@@ -12,7 +12,6 @@ import { marked } from 'marked';
 import { useQueryState } from 'nuqs'
 
 import type {
-    AnyStoryFeature,
     MarkdownStory
 } from '@/types';
 
