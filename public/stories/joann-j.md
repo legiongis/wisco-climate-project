@@ -4,6 +4,7 @@ role: Resident
 neighborhood: The 53210 Neighborhood
 heroImage: img/joann-j.jpg
 coords: -87.9657328, 43.0716245
+footerNote: Story captured by Keviea Guiden on behalf of the [Wisconsin Climate Table](https://wisconsinclimatetable.org/).
 ---
 > Now I'm worried WILL my electric and gas be turned OFF? Or will I be penalized? - I tried.
 

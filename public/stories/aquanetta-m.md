@@ -4,6 +4,7 @@ role: Resident
 neighborhood: The 53233 Neighborhood
 heroImage: img/aquanetta-m.jpg
 coords: -87.9332, 43.0396
+footerNote: Story captured by Keviea Guiden on behalf of the [Wisconsin Climate Table](https://wisconsinclimatetable.org/).
 ---
 > Y'all Need To Lower The Rates So Customers Can afford To keep Their Lights on
 

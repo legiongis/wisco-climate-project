@@ -4,6 +4,7 @@ role: Resident
 neighborhood: The 53218 Neighborhood
 heroImage: img/garlandra-g.jpg
 coords: -87.99096, 43.12313
+footerNote: Story captured by Keviea Guiden on behalf of the [Wisconsin Climate Table](https://wisconsinclimatetable.org/).
 ---
 
 _North Side, historic Old North Milwaukee Villard Avenue area_

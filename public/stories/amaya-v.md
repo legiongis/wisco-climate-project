@@ -4,6 +4,7 @@ role: Resident
 neighborhood: The 53202 Neighborhood
 heroImage: img/amaya-v.jpg
 coords: -87.90330, 43.0438
+footerNote: Story captured by Keviea Guiden on behalf of the [Wisconsin Climate Table](https://wisconsinclimatetable.org/).
 ---
 > Many landlords in Milwaukee do not accept energy assistance or discriminate against tenants who need it.
 

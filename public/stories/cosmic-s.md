@@ -4,6 +4,7 @@ role: Resident
 neighborhood: The 53233 Neighborhood
 heroImage: img/cosmic-s.jpg
 coords: -87.9302, 43.0416
+footerNote: Story captured by Keviea Guiden on behalf of the [Wisconsin Climate Table](https://wisconsinclimatetable.org/).
 ---
 > The electric shut-off moratorium had passed and my parents made an executive decision to ensure my safety by putting me in an environment that was able to meet my basic survival needs even though they knew that theirs were not going to be met.
 
