@@ -4,6 +4,7 @@ role: Home Owner
 neighborhood: Lindsay Heights
 heroImage: img/maria-b.jpg
 coords: -87.93076, 43.05474
+footerNote: Story captured by Keviea Guiden on behalf of the [Wisconsin Climate Table](https://wisconsinclimatetable.org/).
 ---
 
 > I am here to Fight for Our Lights!!! We Energies! YOU MAKE ENERGY A BURDEN!

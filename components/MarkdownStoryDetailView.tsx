@@ -12,12 +12,11 @@ interface MarkdownStoryDetailViewProps {
 }
 
 const MarkdownStoryDetailView: React.FC<MarkdownStoryDetailViewProps> = ({ story }) => {
-    const { name, role, neighborhood, heroImage, videoUrl, htmlContent } = story;
-    let noteString = ""
+    const { name, role, neighborhood, heroImage, videoUrl, htmlContent, footerHtml } = story;
+    let localeNote = ""
     if (neighborhood in neighborhoodNotes) {
-        noteString = neighborhoodNotes[neighborhood as keyof typeof neighborhoodNotes].note
+        localeNote = neighborhoodNotes[neighborhood as keyof typeof neighborhoodNotes].note
     }
-    console.log(videoUrl)
 
     return (
       <div className="wct-story-detail">
@@ -33,7 +32,14 @@ const MarkdownStoryDetailView: React.FC<MarkdownStoryDetailViewProps> = ({ story
                 <div className="wct-compound-title">
                     <h1 className="wct-name">{name}</h1>
                     <p className="wct-role">{role}</p>
-                    <p className="wct-neighborhood">{neighborhood}</p>
+                    <p className="wct-neighborhood">{neighborhood}
+                        {localeNote && (
+                            <>
+                            <em> &mdash; {localeNote}</em>
+                            </>
+                        )}
+
+                    </p>
                 </div>
 
                 {videoUrl && (
@@ -43,10 +49,8 @@ const MarkdownStoryDetailView: React.FC<MarkdownStoryDetailViewProps> = ({ story
                 )}
 
                 <div className="wct-body" dangerouslySetInnerHTML={{ __html: htmlContent }} />
-                {noteString && (
-                    <div className="wct-note">
-                        <p>{noteString}</p>
-                    </div>
+                {footerHtml && (
+                    <div className="story-footer" dangerouslySetInnerHTML={{ __html: footerHtml }}></div>
                 )}
             </div>
             <style jsx>{`
@@ -121,20 +125,6 @@ const MarkdownStoryDetailView: React.FC<MarkdownStoryDetailViewProps> = ({ story
                 .wct-inline-image img {
                     width: 100%;
                     display: block;
-                }
-
-                .wct-note {
-                    padding: 16px 20px;
-                    background: #f3f4f6;
-                    border-radius: 10px;
-                    border: 1px solid #e5e7eb;
-                }
-
-                .wct-note p {
-                    margin: 0;
-                    font-size: 0.88rem;
-                    line-height: 1.6;
-                    color: #4b5563;
                 }
 
                 /* Video */

@@ -4,6 +4,7 @@ role: Resident
 neighborhood: The 53210 Neighborhood
 heroImage: img/debarla-w.jpg
 coords: -87.9687711, 43.0679675
+footerNote: Story captured by Keviea Guiden on behalf of the [Wisconsin Climate Table](https://wisconsinclimatetable.org/).
 ---
 
 > I'm here to support and stand up fights in the energy burden. This is a subject that affects us all at hand, one way or another, especially the black and brown people here in Milwaukee.

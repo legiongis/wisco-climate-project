@@ -12,7 +12,6 @@ import { marked } from 'marked';
 import { useQueryState } from 'nuqs'
 
 import type {
-    AnyStoryFeature,
     MarkdownStory
 } from '@/types';
 
@@ -39,6 +38,7 @@ async function processMarkdown(id: string, rawMarkdownString: string) {
 
     // Convert Markdown body to safe HTML string
     const htmlContent = await marked.parse(content, {gfm: true});
+    const footerHtml = data.footerNote ? await marked.parse(data.footerNote, {gfm: true}) : undefined;
 
     const parsedStory: MarkdownStory = {
         id: id,
@@ -48,7 +48,8 @@ async function processMarkdown(id: string, rawMarkdownString: string) {
         heroImage: data.heroImage,
         htmlContent: htmlContent,
         videoUrl: data.videoUrl,
-        coords: data.coords.split(",").map(Number)
+        coords: data.coords.split(",").map(Number),
+        footerHtml: footerHtml
     }
 
   return parsedStory;
