@@ -24,6 +24,7 @@ export interface MarkdownStory {
     coords: [number, number];
     videoUrl?: string;
     htmlContent: string;
+    footerHtml?: string;
 }
 
 export type StoryProperties = StoryKnownProperties & GeoJsonProperties;
