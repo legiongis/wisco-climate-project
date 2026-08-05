@@ -27,7 +27,7 @@ const DashboardPanel: React.FC<DashboardPanelProps> = ({
             <div className="dashboard-panel">
                 <div className="dashboard-header">
                     <div className="header-text">
-                        <h2>Wisconsin Climate Table Stories</h2>
+                        <h2>Wisconsin Climate Stories</h2>
                         <p className="header-subtitle">{featureCollection.features.length} stories across the state</p>
                     </div>
                     <div className="view-toggles">

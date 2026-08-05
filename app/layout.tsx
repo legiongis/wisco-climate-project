@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Wisconsin Climate Table Stories",
-  description: "Map of stories from Wisconsin Climate Table",
+  title: "Wisconsin Climate Stories",
+  description: "Map of climate stories from Wisconsin",
 };
 
 export default function RootLayout({
