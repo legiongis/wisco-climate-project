@@ -81,7 +81,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
                 L.control.zoom({ position: 'bottomright' }).addTo(currentLeafletMap);
 
                 // Use a clean, modern tile layer
-                L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+                L.tileLayer("https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png", {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
                     maxZoom: 19,
                 }).addTo(currentLeafletMap);
