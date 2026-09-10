@@ -11,4 +11,4 @@ coords: -88.0579222, 44.5224752
 - **Location:** Green Bay
 - **Videographer:** New Leaf Foods
 
-Promotional video highlighting the installation oOf a orchard outside of an apartment complex that will be accessible to all.
+Promotional video highlighting the installation of an orchard outside of an apartment complex that will be accessible to all.
