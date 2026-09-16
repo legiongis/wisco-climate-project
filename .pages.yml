@@ -1,0 +1,23 @@
+media: public/img
+content:
+  - name: stories
+    label: Stories
+    type: collection
+    path: public/stories
+    fields:
+      - name: name
+        type: string
+      - name: role
+        type: string
+      - name: neighborhood
+        type: string
+      - name: heroImage
+        type: image
+        options: 
+          path: public/img
+      - name: videoUrl
+        type: string
+      - name: coords
+        type: string
+      - name: body
+        type: rich-text
