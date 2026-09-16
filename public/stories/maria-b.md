@@ -4,9 +4,7 @@ role: Home Owner
 neighborhood: Lindsay Heights
 heroImage: img/maria-b.jpg
 coords: -87.93076, 43.05474
-footerNote: Story captured by Keviea Guiden on behalf of the [Wisconsin Climate Table](https://wisconsinclimatetable.org/).
 ---
-
 > I am here to Fight for Our Lights!!! We Energies! YOU MAKE ENERGY A BURDEN!
 
 My name is Maria B. I have been a home owner of a 113 year old Duplex in Lindsay Heights Community for 30+ years. I was born and raised in Milwaukee, always on the Northside. I am a Mother of 7 Adult Children and Grandmother of 7 grandchildren. I have worked since I was 11 years old. But for the Last 6 yrs or so I have been Disabled and I am on a fixed income that doesn't go up at all.
@@ -30,3 +28,4 @@ Now NOT Only with a ridiculous Bill from Weenergies and now having to find money
 So that We will not have to experience that everytime in emergency weather. I Demand Solar Panels on My roof and on my neighbors roofs!
 
 > "We Energies please keep my family Safe and Healthy"! KEEP OUR LIGHTS ON! NO MORE DISCONNECTIONS EVER!
+
