@@ -1,6 +1,6 @@
 media:
   input: public/img
-  output: /img
+  output: img
 content:
   - name: stories
     label: Stories
