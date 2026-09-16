@@ -8,7 +8,9 @@ content:
       - name: name
         type: string
       - name: role
-        type: string
+        type: select
+        options:
+          values: ["Partnership", "Resident"]
       - name: neighborhood
         type: string
       - name: heroImage
