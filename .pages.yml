@@ -23,5 +23,7 @@ content:
         type: string
       - name: coords
         type: string
+      - name: footerNote
+        type: string
       - name: body
         type: rich-text
