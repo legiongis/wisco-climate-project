@@ -2,7 +2,7 @@
 name: Solar Flight Pen - Dane Co. Humane Society
 role: Partnership
 neighborhood: Dane County
-heroImage: /public/img/dane-co-humane-society-sign.png
+heroImage: img/dane-co-humane-society-sign.png
 videoUrl: https://youtube.com/embed/W1mpqSy8Q3k
 coords: -89.2949789, 43.0430679
 ---
