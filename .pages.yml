@@ -12,7 +12,7 @@ content:
       - name: role
         type: select
         options:
-          values: ["Partnership", "Resident"]
+          values: ["Partnership", "Resident", "Home Owner"]
       - name: neighborhood
         type: string
       - name: heroImage
