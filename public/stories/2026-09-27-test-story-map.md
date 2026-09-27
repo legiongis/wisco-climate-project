@@ -5,5 +5,5 @@ footerNote: test-story-map-footer
 ---
 ## Wisconsin Data Centers
 
-- Microsoft 
+- Microsoft
 
